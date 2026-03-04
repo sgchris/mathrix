@@ -17,3 +17,4 @@ Mathrix is a client-side only web application designed for children aged 11-14 t
 1. **No Backend**: Do not write backend code, setup Node servers for API handling, or use real/mocked HTTP requests to external databases.
 2. **State Resumption**: Always ensure that the user's progress (active exercise, attempt history, solved exercises) is immediately synced to `localStorage` and smoothly resumed on page reload.
 3. **Component Structure**: Keep React components modular and functional. Use React Hooks for state and effect management.
+4. **Zero Warnings/Errors**: The project must always build and compile cleanly without any errors or warnings. Ensure that all generated code is robust and follows strict compilation guidelines.
