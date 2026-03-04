@@ -1,0 +1,39 @@
+{
+  "id": "fractions-easy-001",
+  "topicId": "fractions",
+  "topicName": "Fractions",
+  "difficulty": "easy",
+  "instructions": "Simplify the fraction to its lowest terms.",
+  "question": {
+    "text": "What is the simplified form of this fraction?",
+    "mathExpression": [
+      "$$ \\frac{12}{16} $$"
+    ]
+  },
+  "inputs": [
+    {
+      "name": "numerator",
+      "label": "Numerator =",
+      "inputType": "number",
+      "correctAnswer": "3"
+    },
+    {
+      "name": "denominator",
+      "label": "Denominator =",
+      "inputType": "number",
+      "correctAnswer": "4"
+    }
+  ],
+  "hints": [
+    "Find the Greatest Common Factor (GCF) of 12 and 16. List the factors of each number.",
+    "The GCF of 12 and 16 is 4. Divide both the numerator and denominator by 4."
+  ],
+  "explanation": {
+    "steps": [
+      "1. Start with the fraction $$ \\frac{12}{16} $$.",
+      "2. Find the GCF: factors of 12 are 1, 2, 3, 4, 6, 12 and factors of 16 are 1, 2, 4, 8, 16. The GCF is 4.",
+      "3. Divide both top and bottom by 4: $$ \\frac{12 \\div 4}{16 \\div 4} = \\frac{3}{4} $$.",
+      "4. Since 3 and 4 share no common factors other than 1, the fraction is now fully simplified."
+    ]
+  }
+}

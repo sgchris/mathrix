@@ -1,0 +1,35 @@
+[
+  {
+    "id": "algebra",
+    "name": "Algebra",
+    "exercises": [
+      "algebra-easy-001",
+      "algebra-easy-002",
+      "algebra-medium-003",
+      "algebra-medium-004",
+      "algebra-medium-005"
+    ]
+  },
+  {
+    "id": "fractions",
+    "name": "Fractions",
+    "exercises": [
+      "fractions-easy-001",
+      "fractions-easy-002",
+      "fractions-medium-003",
+      "fractions-medium-004",
+      "fractions-medium-005"
+    ]
+  },
+  {
+    "id": "percentages",
+    "name": "Percentages",
+    "exercises": [
+      "percentages-easy-001",
+      "percentages-easy-002",
+      "percentages-medium-003",
+      "percentages-medium-004",
+      "percentages-medium-005"
+    ]
+  }
+]

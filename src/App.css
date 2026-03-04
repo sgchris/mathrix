@@ -1,0 +1,17 @@
+.app-layout {
+  display: grid;
+  grid-template-columns: var(--sidebar-topics-width) 1fr;
+  height: 100vh;
+  overflow: hidden;
+}
+
+.app-layout.has-history {
+  grid-template-columns: var(--sidebar-topics-width) var(--sidebar-history-width) 1fr;
+}
+
+.main-area {
+  overflow-y: auto;
+  background: var(--color-bg);
+  min-width: 0;
+}
+

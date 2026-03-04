@@ -1,0 +1,33 @@
+{
+  "id": "percentages-medium-003",
+  "topicId": "percentages",
+  "topicName": "Percentages",
+  "difficulty": "medium",
+  "instructions": "Calculate the sale price after the discount.",
+  "question": {
+    "text": "A shirt originally costs $60. It is on sale with a 20% discount. What is the final sale price in dollars?",
+    "mathExpression": [
+      "$$ \\text{Original price: } \\$60 \\quad \\text{Discount: } 20\\% $$"
+    ]
+  },
+  "inputs": [
+    {
+      "name": "salePrice",
+      "label": "Sale price ($) =",
+      "inputType": "number",
+      "correctAnswer": "48"
+    }
+  ],
+  "hints": [
+    "First, figure out how much the discount is in dollars. What is 20% of $60?",
+    "The discount is $12 (since $$ 60 \\times 0.20 = 12 $$). Subtract that from the original price to get the sale price."
+  ],
+  "explanation": {
+    "steps": [
+      "1. Find the discount amount: $$ 60 \\times \\frac{20}{100} = 60 \\times 0.20 = 12 $$.",
+      "2. Subtract the discount from the original price: $$ 60 - 12 = 48 $$.",
+      "3. The sale price is $48.",
+      "4. Alternative method: A 20% discount means you pay 80%, so $$ 60 \\times 0.80 = 48 $$ as well."
+    ]
+  }
+}

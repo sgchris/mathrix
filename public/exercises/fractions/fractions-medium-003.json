@@ -1,0 +1,40 @@
+{
+  "id": "fractions-medium-003",
+  "topicId": "fractions",
+  "topicName": "Fractions",
+  "difficulty": "medium",
+  "instructions": "Subtract the fractions. Give your answer in its simplest form.",
+  "question": {
+    "text": "What is the result of this subtraction?",
+    "mathExpression": [
+      "$$ \\frac{3}{4} - \\frac{1}{3} $$"
+    ]
+  },
+  "inputs": [
+    {
+      "name": "numerator",
+      "label": "Numerator =",
+      "inputType": "number",
+      "correctAnswer": "5"
+    },
+    {
+      "name": "denominator",
+      "label": "Denominator =",
+      "inputType": "number",
+      "correctAnswer": "12"
+    }
+  ],
+  "hints": [
+    "You need a common denominator for 4 and 3. What is the smallest number that both 4 and 3 divide into evenly?",
+    "The LCM of 4 and 3 is 12. Convert both fractions: $$ \\frac{3}{4} = \\frac{9}{12} $$ and $$ \\frac{1}{3} = \\frac{4}{12} $$. Now subtract."
+  ],
+  "explanation": {
+    "steps": [
+      "1. Find the Least Common Multiple (LCM) of 4 and 3. Multiples of 4: 4, 8, 12. Multiples of 3: 3, 6, 9, 12. The LCM is 12.",
+      "2. Convert $$ \\frac{3}{4} $$ to twelfths: $$ \\frac{3 \\times 3}{4 \\times 3} = \\frac{9}{12} $$.",
+      "3. Convert $$ \\frac{1}{3} $$ to twelfths: $$ \\frac{1 \\times 4}{3 \\times 4} = \\frac{4}{12} $$.",
+      "4. Subtract: $$ \\frac{9}{12} - \\frac{4}{12} = \\frac{5}{12} $$.",
+      "5. The GCF of 5 and 12 is 1, so $$ \\frac{5}{12} $$ is already fully simplified."
+    ]
+  }
+}

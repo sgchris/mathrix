@@ -1,0 +1,36 @@
+.reasoning-box {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.reasoning-box__label {
+  font-size: 0.8rem;
+  font-weight: 800;
+  text-transform: uppercase;
+  letter-spacing: 0.07em;
+  color: var(--color-text-secondary);
+}
+
+.reasoning-box__textarea {
+  resize: vertical;
+  min-height: 90px;
+  padding: 12px 14px;
+  font-size: 0.93rem;
+  border: 1.5px solid var(--color-border);
+  border-radius: var(--border-radius-sm);
+  background: var(--color-surface);
+  color: var(--color-text);
+  line-height: 1.6;
+  transition: border-color 0.15s, box-shadow 0.15s;
+  outline: none;
+}
+
+.reasoning-box__textarea:focus {
+  border-color: var(--color-accent);
+  box-shadow: 0 0 0 3px rgba(74, 108, 247, 0.12);
+}
+
+.reasoning-box__textarea::placeholder {
+  color: #b0b7c8;
+}
