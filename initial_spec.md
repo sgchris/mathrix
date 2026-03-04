@@ -9,6 +9,11 @@ Mathrix is a client-side only web application designed to help children aged 11-
 - **Styling/Assets**: Google Fonts, Heroicons
 - **Storage**: `localStorage` (Client-side persistence only)
 
+## 2.1 Data Architecture
+- **Exercise Storage**: Every exercise is strictly stored in its own standard JSON file within a designated, accessible directory (e.g., `/public/exercises/`).
+- **Dynamic Fetching**: The application fetches these JSON exercise files dynamically at runtime whenever a new exercise needs to be loaded and displayed to the user.
+- **Extensibility**: By using a unified JSON schema, the app efficiently supports various exercise types (multiple inputs, different layouts) while supporting easy AI-based exercise generation in the future.
+
 ## 3. Layout & User Interface
 
 **Design Guidelines:** The design must be bright, clean, and convenient for reading. Since the target audience is teenagers (ages 11-14), the visual style should be engaging but not childish, finding a balance between approachability and maturity.
