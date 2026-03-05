@@ -1,0 +1,38 @@
+{
+  "id": "fractions-hard-012",
+  "topicId": "fractions",
+  "topicName": "Fractions",
+  "difficulty": "hard",
+  "instructions": "Add the fractions.",
+  "question": {
+    "text": "What is the sum?",
+    "mathExpression": [
+      "$$ \\frac{2}{3} + \\frac{2}{5} $$"
+    ]
+  },
+  "inputs": [
+    {
+      "name": "numerator",
+      "label": "Numerator:",
+      "inputType": "number",
+      "correctAnswer": "16"
+    },
+    {
+      "name": "denominator",
+      "label": "Denominator:",
+      "inputType": "number",
+      "correctAnswer": "15"
+    }
+  ],
+  "hints": [
+    "Find the least common multiple of the denominators.",
+    "The LCM of 3 and 5 is 15."
+  ],
+  "explanation": {
+    "steps": [
+      "1. The expression is $$ \\frac{2}{3} + \\frac{2}{5} $$.",
+      "2. Convert fractions: $$ \\frac{10}{15} + \\frac{6}{15} $$.",
+      "3. Add the numerators: $$ \\frac{16}{15} $$."
+    ]
+  }
+}

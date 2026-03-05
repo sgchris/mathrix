@@ -1,0 +1,32 @@
+{
+  "id": "algebra-medium-012",
+  "topicId": "algebra",
+  "topicName": "Algebra",
+  "difficulty": "medium",
+  "instructions": "Solve for x.",
+  "question": {
+    "text": "What is the value of x?",
+    "mathExpression": [
+      "$$ 3x + 5 = 20 $$"
+    ]
+  },
+  "inputs": [
+    {
+      "name": "x",
+      "label": "x =",
+      "inputType": "number",
+      "correctAnswer": "5"
+    }
+  ],
+  "hints": [
+    "Isolate the term with x.",
+    "Subtract 5 from both sides."
+  ],
+  "explanation": {
+    "steps": [
+      "1. We start with $$ 3x + 5 = 20 $$.",
+      "2. Subtract 5 from both sides: $$ 3x = 15 $$.",
+      "3. Divide by 3: $$ x = 5 $$."
+    ]
+  }
+}

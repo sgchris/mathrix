@@ -1,0 +1,32 @@
+{
+  "id": "algebra-medium-011",
+  "topicId": "algebra",
+  "topicName": "Algebra",
+  "difficulty": "medium",
+  "instructions": "Solve for x.",
+  "question": {
+    "text": "What is the value of x?",
+    "mathExpression": [
+      "$$ 2x + 3 = 13 $$"
+    ]
+  },
+  "inputs": [
+    {
+      "name": "x",
+      "label": "x =",
+      "inputType": "number",
+      "correctAnswer": "5"
+    }
+  ],
+  "hints": [
+    "Isolate the term with x.",
+    "Subtract 3 from both sides."
+  ],
+  "explanation": {
+    "steps": [
+      "1. We start with $$ 2x + 3 = 13 $$.",
+      "2. Subtract 3 from both sides: $$ 2x = 10 $$.",
+      "3. Divide by 2: $$ x = 5 $$."
+    ]
+  }
+}

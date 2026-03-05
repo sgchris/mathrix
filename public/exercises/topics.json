@@ -12,7 +12,17 @@
       "algebra-medium-007",
       "algebra-medium-008",
       "algebra-hard-009",
-      "algebra-hard-010"
+      "algebra-hard-010",
+      "algebra-medium-011",
+      "algebra-medium-012",
+      "algebra-medium-013",
+      "algebra-medium-014",
+      "algebra-medium-015",
+      "algebra-hard-016",
+      "algebra-hard-017",
+      "algebra-hard-018",
+      "algebra-hard-019",
+      "algebra-hard-020"
     ]
   },
   {
@@ -23,7 +33,17 @@
       "fractions-easy-002",
       "fractions-medium-003",
       "fractions-medium-004",
-      "fractions-medium-005"
+      "fractions-medium-005",
+      "fractions-medium-006",
+      "fractions-medium-007",
+      "fractions-medium-008",
+      "fractions-medium-009",
+      "fractions-medium-010",
+      "fractions-hard-011",
+      "fractions-hard-012",
+      "fractions-hard-013",
+      "fractions-hard-014",
+      "fractions-hard-015"
     ]
   },
   {
@@ -39,7 +59,17 @@
       "percentages-medium-007",
       "percentages-medium-008",
       "percentages-hard-009",
-      "percentages-hard-010"
+      "percentages-hard-010",
+      "percentages-medium-011",
+      "percentages-medium-012",
+      "percentages-medium-013",
+      "percentages-medium-014",
+      "percentages-medium-015",
+      "percentages-hard-016",
+      "percentages-hard-017",
+      "percentages-hard-018",
+      "percentages-hard-019",
+      "percentages-hard-020"
     ]
   }
 ]

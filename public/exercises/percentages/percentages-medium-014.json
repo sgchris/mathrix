@@ -1,0 +1,31 @@
+{
+  "id": "percentages-medium-014",
+  "topicId": "percentages",
+  "topicName": "Percentages",
+  "difficulty": "medium",
+  "instructions": "Calculate the percentage.",
+  "question": {
+    "text": "What is 35% of 350?",
+    "mathExpression": [
+      "$$ 35\\% \\text{ of } 350 $$"
+    ]
+  },
+  "inputs": [
+    {
+      "name": "result",
+      "label": "Result:",
+      "inputType": "number",
+      "correctAnswer": "122.5"
+    }
+  ],
+  "hints": [
+    "Convert 35% to a decimal.",
+    "Multiply the decimal by 350."
+  ],
+  "explanation": {
+    "steps": [
+      "1. Convert 35% to a decimal: $$ 0.35 $$.",
+      "2. Multiply by the value: $$ 0.35 \\times 350 = 122.5 $$."
+    ]
+  }
+}

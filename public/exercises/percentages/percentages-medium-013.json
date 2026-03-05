@@ -1,0 +1,31 @@
+{
+  "id": "percentages-medium-013",
+  "topicId": "percentages",
+  "topicName": "Percentages",
+  "difficulty": "medium",
+  "instructions": "Calculate the percentage.",
+  "question": {
+    "text": "What is 30% of 300?",
+    "mathExpression": [
+      "$$ 30\\% \\text{ of } 300 $$"
+    ]
+  },
+  "inputs": [
+    {
+      "name": "result",
+      "label": "Result:",
+      "inputType": "number",
+      "correctAnswer": "90"
+    }
+  ],
+  "hints": [
+    "Convert 30% to a decimal.",
+    "Multiply the decimal by 300."
+  ],
+  "explanation": {
+    "steps": [
+      "1. Convert 30% to a decimal: $$ 0.3 $$.",
+      "2. Multiply by the value: $$ 0.3 \\times 300 = 90 $$."
+    ]
+  }
+}

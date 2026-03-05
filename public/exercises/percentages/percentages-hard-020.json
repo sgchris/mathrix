@@ -1,0 +1,32 @@
+{
+  "id": "percentages-hard-020",
+  "topicId": "percentages",
+  "topicName": "Percentages",
+  "difficulty": "hard",
+  "instructions": "Calculate the percentage increase.",
+  "question": {
+    "text": "A value increases from 190 to 240. What is the percentage increase?",
+    "mathExpression": [
+      "$$ \\text{Increase from } 190 \\text{ to } 240 $$"
+    ]
+  },
+  "inputs": [
+    {
+      "name": "increase",
+      "label": "Percentage Increase (%):",
+      "inputType": "number",
+      "correctAnswer": "26"
+    }
+  ],
+  "hints": [
+    "Find the absolute difference.",
+    "Divide the difference by the original value and multiply by 100."
+  ],
+  "explanation": {
+    "steps": [
+      "1. Find the difference: $$ 240 - 190 = 50 $$.",
+      "2. Divide by original: $$ \\frac{50}{190} $$.",
+      "3. Convert to percentage: $$ (\\frac{50}{190}) \\times 100 \\approx 26\\% $$."
+    ]
+  }
+}

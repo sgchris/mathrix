@@ -1,0 +1,32 @@
+{
+  "id": "percentages-hard-019",
+  "topicId": "percentages",
+  "topicName": "Percentages",
+  "difficulty": "hard",
+  "instructions": "Calculate the percentage increase.",
+  "question": {
+    "text": "A value increases from 180 to 225. What is the percentage increase?",
+    "mathExpression": [
+      "$$ \\text{Increase from } 180 \\text{ to } 225 $$"
+    ]
+  },
+  "inputs": [
+    {
+      "name": "increase",
+      "label": "Percentage Increase (%):",
+      "inputType": "number",
+      "correctAnswer": "25"
+    }
+  ],
+  "hints": [
+    "Find the absolute difference.",
+    "Divide the difference by the original value and multiply by 100."
+  ],
+  "explanation": {
+    "steps": [
+      "1. Find the difference: $$ 225 - 180 = 45 $$.",
+      "2. Divide by original: $$ \\frac{45}{180} $$.",
+      "3. Convert to percentage: $$ (\\frac{45}{180}) \\times 100 \\approx 25\\% $$."
+    ]
+  }
+}

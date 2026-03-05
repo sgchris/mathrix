@@ -48,7 +48,7 @@ Every exercise file must strictly follow this JSON structure:
     "text": "What is the value of x?",
     "mathExpression": [
       "$$ x + 5 = 12 $$"              // Use LaTeX notation wrapped in $$ for expressions
-    ]
+]
   },
   "inputs": [                         // Define the input fields the user needs to answer
     {
