@@ -1,0 +1,32 @@
+{
+  "id": "algebra-medium-023",
+  "topicId": "algebra",
+  "topicName": "Algebra",
+  "difficulty": "medium",
+  "instructions": "Solve for x.",
+  "question": {
+    "text": "What is the value of x?",
+    "mathExpression": [
+      "$$ 6x + 14 = 44 $$"
+    ]
+  },
+  "inputs": [
+    {
+      "name": "x",
+      "label": "x =",
+      "inputType": "number",
+      "correctAnswer": "5"
+    }
+  ],
+  "hints": [
+    "First, subtract 14 from both sides.",
+    "Then, divide by 6 to isolate x."
+  ],
+  "explanation": {
+    "steps": [
+      "1. Start with $$ 6x + 14 = 44 $$.",
+      "2. Subtract 14 from both sides: $$ 6x = 30 $$.",
+      "3. Divide both sides by 6: $$ x = 5 $$."
+    ]
+  }
+}

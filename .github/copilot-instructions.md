@@ -13,6 +13,7 @@ Mathrix is a client-side only web application designed for children aged 11-14 t
 ## ⚠️ Critical Rule: Libraries & Tools Versions ⚠️
 - **Always use the latest stable versions** for all libraries, frameworks, and tools (React, Vite, Heroicons, etc.).
 - **Use Context7 MCP**: Before scaffolding, implementing new libraries, or providing library-specific code snippets, you **MUST** use the Context7 MCP (`mcp_context7_resolve-library-id` and `mcp_context7_get-library-docs`) to fetch the latest stable versions, up-to-date documentation, and current best practices. Do not rely on outdated training data for API definitions.
+- **Git Operations**: Git commands are restricted to read-only operations (e.g., `git status`, `git diff`, `git log`). Do not execute state-mutating Git commands.
 
 ## Architectural Guidelines
 1. **No Backend**: Do not write backend code, setup Node servers for API handling, or use real/mocked HTTP requests to external databases.
@@ -24,4 +25,3 @@ Mathrix is a client-side only web application designed for children aged 11-14 t
 ## Workflow & Agent Guidelines
 1. **No Extra Markdown**: Do not create any additional `.md` files unless explicitly requested by the user.
 2. **CLI Usage**: You are allowed and encouraged to use CLI commands to install/update tools or libraries, run builds, start the dev server, etc.
-3. **Git Operations**: Git commands are restricted to read-only operations (e.g., `git status`, `git diff`, `git log`). Do not execute state-mutating Git commands.

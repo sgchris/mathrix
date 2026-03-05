@@ -1,0 +1,32 @@
+{
+  "id": "algebra-medium-024",
+  "topicId": "algebra",
+  "topicName": "Algebra",
+  "difficulty": "medium",
+  "instructions": "Solve for x.",
+  "question": {
+    "text": "What is the value of x?",
+    "mathExpression": [
+      "$$ 9x + 9 = 126 $$"
+    ]
+  },
+  "inputs": [
+    {
+      "name": "x",
+      "label": "x =",
+      "inputType": "number",
+      "correctAnswer": "13"
+    }
+  ],
+  "hints": [
+    "First, subtract 9 from both sides.",
+    "Then, divide by 9 to isolate x."
+  ],
+  "explanation": {
+    "steps": [
+      "1. Start with $$ 9x + 9 = 126 $$.",
+      "2. Subtract 9 from both sides: $$ 9x = 117 $$.",
+      "3. Divide both sides by 9: $$ x = 13 $$."
+    ]
+  }
+}
