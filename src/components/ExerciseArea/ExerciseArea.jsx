@@ -186,6 +186,11 @@ export default function ExerciseArea() {
           currentInputs={currentInputs}
           status={exState.status}
           onChange={handleInputChange}
+          canCheck={canCheck}
+          canNext={canNext}
+          hasNextExercise={!!nextExerciseId}
+          onCheck={handleCheckAnswers}
+          onNext={handleNext}
         />
 
         <ReasoningTextbox

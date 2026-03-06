@@ -21,6 +21,7 @@ export default function TopicSidebar() {
   return (
     <aside className="topic-sidebar">
       <div className="topic-sidebar__logo">
+        <img src={`${import.meta.env.BASE_URL}mathrix_logo_100.png`} alt="Mathrix logo" className="topic-sidebar__logo-img" />
         <span className="topic-sidebar__logo-text">Mathrix</span>
       </div>
       <nav className="topic-sidebar__nav">
