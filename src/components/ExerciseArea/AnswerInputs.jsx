@@ -5,6 +5,8 @@ import {
 import { useApp } from '../../context/useApp'
 import './AnswerInputs.css'
 
+const HEBREW_LETTER_REGEX = /[\u0590-\u05FF]/
+
 export default function AnswerInputs({
   inputs,
   currentInputs,
@@ -16,17 +18,27 @@ export default function AnswerInputs({
   onCheck,
   onNext,
 }) {
-  const { t } = useApp()
+  const { t, isRTL } = useApp()
   const isLocked = ['solved', 'failed', 'explanation_shown'].includes(status)
 
   return (
     <div className="answer-inputs">
       <h4 className="answer-inputs__title">{t('answerSectionTitle')}</h4>
       <div className="answer-inputs__fields">
-        {inputs.map(({ name, label, inputType }) => (
-          <div key={name} className="answer-row" dir="ltr">
-            <label className="answer-row__label" htmlFor={`answer-${name}`}>
-              <span dir="auto">{label}</span>
+        {inputs.map(({ name, label, inputType }) => {
+          const hasHebrewLabel = isRTL && HEBREW_LETTER_REGEX.test(label)
+
+          return (
+          <div
+            key={name}
+            className={`answer-row${hasHebrewLabel ? ' answer-row--rtl-label' : ''}`}
+            dir="ltr"
+          >
+            <label
+              className={`answer-row__label${hasHebrewLabel ? ' answer-row__label--rtl' : ''}`}
+              htmlFor={`answer-${name}`}
+            >
+              <span dir={hasHebrewLabel ? 'rtl' : 'auto'}>{label}</span>
             </label>
             <input
               id={`answer-${name}`}
@@ -41,7 +53,8 @@ export default function AnswerInputs({
               dir="ltr"
             />
           </div>
-        ))}
+          )
+        })}
       </div>
       <div className="answer-inputs__actions">
         <button

@@ -25,5 +25,28 @@
     "steps": [
       "50% is half."
     ]
-  }
+    },
+    "translations": {
+      "he": {
+        "topicName": "אחוזים",
+        "instructions": "מצאו את האחוז.",
+        "question": {
+          "text": "כמה הם 50% מתוך 100?"
+        },
+        "inputs": [
+          {
+            "name": "result",
+            "label": "תוצאה ="
+          }
+        ],
+        "hints": [
+          "חלקו ב-2."
+        ],
+        "explanation": {
+          "steps": [
+            "50% הם חצי."
+          ]
+        }
+      }
+    }
 }

@@ -26,12 +26,20 @@
   gap: 10px;
 }
 
+.answer-row--rtl-label {
+  flex-direction: row-reverse;
+}
+
 .answer-row__label {
   font-size: 1rem;
   font-weight: 700;
   color: var(--color-text);
   white-space: nowrap;
   min-width: 40px;
+}
+
+.answer-row__label--rtl {
+  text-align: right;
 }
 
 .answer-row__input {
