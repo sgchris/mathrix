@@ -53,8 +53,13 @@ button {
   background: none;
 }
 
-input, textarea {
+input, textarea, select {
   font-family: inherit;
+}
+
+.math-inline,
+.math-block {
+  unicode-bidi: isolate;
 }
 
 ::-webkit-scrollbar {

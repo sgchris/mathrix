@@ -25,38 +25,45 @@ const EMPTY_EX_STATE = {
 }
 
 export default function ExerciseArea() {
-  const { appState, dispatch, topics } = useContext(AppContext)
+  const { appState, dispatch, topics, language, t } = useContext(AppContext)
   const { activeExerciseId, activeTopic, exerciseStates, selectedLevel } = appState
+  const requestKey = activeExerciseId && activeTopic
+    ? `${activeTopic}:${activeExerciseId}:${language}`
+    : null
 
-  const [loadedExercise, setLoadedExercise] = useState({ id: null, data: null, error: null })
+  const [loadedExercise, setLoadedExercise] = useState({ key: null, data: null, error: null })
 
   useEffect(() => {
     if (!activeExerciseId || !activeTopic) return
 
     let cancelled = false
-    fetchExercise(activeTopic, activeExerciseId)
+    fetchExercise(activeTopic, activeExerciseId, language)
       .then(data => {
-        if (!cancelled) setLoadedExercise({ id: activeExerciseId, data, error: null })
+        if (!cancelled) {
+          setLoadedExercise({ key: requestKey, data, error: null })
+        }
       })
       .catch(() => {
-        if (!cancelled)
-          setLoadedExercise({ id: activeExerciseId, data: null, error: 'Could not load this exercise.' })
+        if (!cancelled) {
+          setLoadedExercise({ key: requestKey, data: null, error: 'exercise-load-error' })
+        }
       })
     return () => { cancelled = true }
-  }, [activeExerciseId, activeTopic])
+  }, [activeExerciseId, activeTopic, language, requestKey])
 
   // Derive loading / error / exercise from async state
-  const loading = !!activeExerciseId && loadedExercise.id !== activeExerciseId
-  const exercise = loadedExercise.id === activeExerciseId ? loadedExercise.data : null
-  const error = loadedExercise.id === activeExerciseId ? loadedExercise.error : null
+  const isCurrentExercise = loadedExercise.key === requestKey
+  const loading = !!requestKey && !isCurrentExercise
+  const exercise = isCurrentExercise ? loadedExercise.data : null
+  const error = isCurrentExercise ? loadedExercise.error : null
 
   if (!activeExerciseId) {
     return (
       <div className="exercise-area exercise-area--empty">
         <div className="exercise-area__placeholder">
           <div className="exercise-area__placeholder-icon">✏️</div>
-          <h2>Pick a topic to get started</h2>
-          <p>Choose a math topic from the left sidebar to begin practising.</p>
+          <h2>{t('emptyState.title')}</h2>
+          <p>{t('emptyState.description')}</p>
         </div>
       </div>
     )
@@ -73,7 +80,7 @@ export default function ExerciseArea() {
   if (error) {
     return (
       <div className="exercise-area exercise-area--error">
-        <p>{error}</p>
+        <p>{error === 'exercise-load-error' ? t('errors.exerciseLoad') : error}</p>
       </div>
     )
   }
@@ -165,7 +172,7 @@ export default function ExerciseArea() {
       <div className="exercise-area__content">
         <div className="exercise-area__meta">
           <span className={`difficulty-badge difficulty-badge--${exercise.difficulty}`}>
-            {exercise.difficulty}
+            {t(`levels.${exercise.difficulty}`)}
           </span>
         </div>
 
@@ -175,17 +182,17 @@ export default function ExerciseArea() {
 
         {exState.attempts > 0 && exState.status === 'pending' && (
           <div className="answer-feedback answer-feedback--wrong">
-            Incorrect — {attemptsLeft} attempt{attemptsLeft !== 1 ? 's' : ''} remaining.
+            {t('feedback.incorrect', { count: attemptsLeft })}
           </div>
         )}
         {exState.status === 'solved' && (
           <div className="answer-feedback answer-feedback--correct">
-            Correct! Great work! 🎉
+            {t('feedback.correct')}
           </div>
         )}
         {exState.status === 'failed' && (
           <div className="answer-feedback answer-feedback--failed">
-            No more attempts. Click <strong>How to solve?</strong> to see the solution, or <strong>Next</strong> to continue.
+            {t('feedback.failed')}
           </div>
         )}
 

@@ -115,7 +115,7 @@
 }
 
 .answer-action-btn--next {
-  margin-left: auto;
+  margin-inline-start: auto;
 }
 
 .answer-action-btn__icon {

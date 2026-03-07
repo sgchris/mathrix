@@ -4,7 +4,7 @@ import { AppContext } from '../../context/useApp'
 import './ExerciseHistorySidebar.css'
 
 export default function ExerciseHistorySidebar() {
-  const { appState, dispatch, topics } = useContext(AppContext)
+  const { appState, dispatch, topics, t } = useContext(AppContext)
   const { activeTopic, activeExerciseId, topicHistory, exerciseStates } = appState
 
   if (!activeTopic) return null
@@ -39,7 +39,7 @@ export default function ExerciseHistorySidebar() {
     <aside className="history-sidebar">
       <div className="history-sidebar__header">
         <span className="history-sidebar__title">{topicData?.name ?? activeTopic}</span>
-        <span className="history-sidebar__count">{history.length} exercise{history.length !== 1 ? 's' : ''}</span>
+        <span className="history-sidebar__count">{t('history.count', { count: history.length })}</span>
       </div>
       <div className="history-sidebar__list">
         {history.map((exerciseId, index) => (
@@ -52,10 +52,10 @@ export default function ExerciseHistorySidebar() {
             {getLevelFromId(exerciseId) && (
               <span
                 className={`level-dot level-dot--${getLevelFromId(exerciseId)}`}
-                title={getLevelFromId(exerciseId)}
+                title={t(`levels.${getLevelFromId(exerciseId)}`)}
               />
             )}
-            <span className="history-item__label">Exercise {index + 1}</span>
+            <span className="history-item__label">{t('history.exercise', { index: index + 1 })}</span>
             <span className="history-item__status">{getStatusIcon(exerciseId)}</span>
           </button>
         ))}

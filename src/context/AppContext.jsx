@@ -1,5 +1,6 @@
 import { useReducer, useEffect, useState } from 'react'
 import { fetchTopics } from '../utils/exerciseUtils'
+import { getLocale, translate } from '../utils/localization'
 import { AppContext } from './useApp'
 
 const STORAGE_KEY = 'mathrix_state'
@@ -10,6 +11,7 @@ const initialState = {
   topicHistory: {},
   exerciseStates: {},
   selectedLevel: 'easy',
+  language: 'en',
 }
 
 function getExerciseState(state, exerciseId) {
@@ -222,6 +224,13 @@ function reducer(state, action) {
       }
     }
 
+    case 'SET_LANGUAGE': {
+      return {
+        ...state,
+        language: action.payload.language,
+      }
+    }
+
     default:
       return state
   }
@@ -239,16 +248,42 @@ export default function AppProvider({ children }) {
     }
   })
 
+  const locale = getLocale(appState.language)
+
+  function setLanguage(language) {
+    dispatch({ type: 'SET_LANGUAGE', payload: { language } })
+  }
+
+  function t(key, params) {
+    return translate(appState.language, key, params)
+  }
+
   useEffect(() => {
-    fetchTopics().then(setTopics).catch(console.error)
-  }, [])
+    fetchTopics(appState.language).then(setTopics).catch(console.error)
+  }, [appState.language])
+
+  useEffect(() => {
+    document.documentElement.lang = locale.lang
+    document.documentElement.dir = locale.dir
+  }, [locale.dir, locale.lang])
 
   useEffect(() => {
     localStorage.setItem(STORAGE_KEY, JSON.stringify(appState))
   }, [appState])
 
   return (
-    <AppContext.Provider value={{ appState, dispatch, topics }}>
+    <AppContext.Provider
+      value={{
+        appState,
+        dispatch,
+        topics,
+        locale,
+        language: appState.language,
+        isRTL: locale.dir === 'rtl',
+        setLanguage,
+        t,
+      }}
+    >
       {children}
     </AppContext.Provider>
   )

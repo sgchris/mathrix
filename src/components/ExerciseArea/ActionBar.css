@@ -48,7 +48,7 @@
 }
 
 .action-btn--next {
-  margin-left: auto;
+  margin-inline-start: auto;
 }
 
 .action-btn__icon {

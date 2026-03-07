@@ -21,6 +21,7 @@ export default function MathText({ text, displayMode = false }) {
             <span
               key={i}
               className={displayMode ? 'math-block' : 'math-inline'}
+              dir="ltr"
               dangerouslySetInnerHTML={{ __html: html }}
             />
           )

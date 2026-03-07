@@ -10,7 +10,7 @@ import LevelSelectorBar from './components/shared/LevelSelectorBar'
 import './App.css'
 
 function AppLayout() {
-  const { appState } = useContext(AppContext)
+  const { appState, t } = useContext(AppContext)
   const hasActiveTopic = !!appState.activeTopic
   const [isMobileDrawerOpen, setIsMobileDrawerOpen] = useState(false)
 
@@ -24,7 +24,7 @@ function AppLayout() {
         {hasActiveTopic && <ExerciseHistorySidebar />}
         <main className="main-area">
           <div className="mobile-app-bar">
-            <button className="mobile-app-bar__menu" onClick={toggleDrawer} aria-label="Open menu">
+            <button className="mobile-app-bar__menu" onClick={toggleDrawer} aria-label={t('openMenu')}>
               <Bars3Icon style={{ width: '24px', height: '24px' }} />
             </button>
             <span className="mobile-app-bar__title">Mathrix</span>

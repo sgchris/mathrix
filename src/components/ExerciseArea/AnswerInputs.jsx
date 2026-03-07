@@ -2,6 +2,7 @@ import {
   CheckCircleIcon,
   ArrowRightIcon,
 } from '@heroicons/react/24/outline'
+import { useApp } from '../../context/useApp'
 import './AnswerInputs.css'
 
 export default function AnswerInputs({
@@ -15,16 +16,17 @@ export default function AnswerInputs({
   onCheck,
   onNext,
 }) {
+  const { t } = useApp()
   const isLocked = ['solved', 'failed', 'explanation_shown'].includes(status)
 
   return (
     <div className="answer-inputs">
-      <h4 className="answer-inputs__title">Your Answer(s)</h4>
+      <h4 className="answer-inputs__title">{t('answerSectionTitle')}</h4>
       <div className="answer-inputs__fields">
         {inputs.map(({ name, label, inputType }) => (
-          <div key={name} className="answer-row">
+          <div key={name} className="answer-row" dir="ltr">
             <label className="answer-row__label" htmlFor={`answer-${name}`}>
-              {label}
+              <span dir="auto">{label}</span>
             </label>
             <input
               id={`answer-${name}`}
@@ -36,6 +38,7 @@ export default function AnswerInputs({
               onChange={e => onChange(name, e.target.value)}
               disabled={isLocked}
               autoComplete="off"
+              dir="ltr"
             />
           </div>
         ))}
@@ -45,18 +48,18 @@ export default function AnswerInputs({
           className="answer-action-btn answer-action-btn--primary"
           disabled={!canCheck}
           onClick={onCheck}
-          title="Check your answers"
+          title={t('actions.checkAnswersTitle')}
         >
           <CheckCircleIcon className="answer-action-btn__icon" />
-          Check Answers
+          {t('actions.checkAnswers')}
         </button>
         <button
           className="answer-action-btn answer-action-btn--next"
           disabled={!canNext || !hasNextExercise}
           onClick={onNext}
-          title="Go to next exercise"
+          title={t('actions.nextTitle')}
         >
-          Next
+          {t('actions.next')}
           <ArrowRightIcon className="answer-action-btn__icon answer-action-btn__icon--right" />
         </button>
       </div>

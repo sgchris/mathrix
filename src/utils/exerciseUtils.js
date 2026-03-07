@@ -1,15 +1,19 @@
+import { localizeExercise, localizeTopics } from './localization'
+
 const base = import.meta.env.BASE_URL
 
-export async function fetchTopics() {
+export async function fetchTopics(language = 'en') {
   const res = await fetch(`${base}exercises/topics.json`)
   if (!res.ok) throw new Error('Failed to fetch topics')
-  return res.json()
+  const topics = await res.json()
+  return localizeTopics(topics, language)
 }
 
-export async function fetchExercise(topicId, exerciseId) {
+export async function fetchExercise(topicId, exerciseId, language = 'en') {
   const res = await fetch(`${base}exercises/${topicId}/${exerciseId}.json`)
   if (!res.ok) throw new Error(`Failed to fetch exercise: ${exerciseId}`)
-  return res.json()
+  const exercise = await res.json()
+  return localizeExercise(exercise, language)
 }
 
 export function validateAnswers(exerciseInputs, userInputs) {

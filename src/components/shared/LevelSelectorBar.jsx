@@ -9,7 +9,7 @@ const LEVELS = [
 ]
 
 export default function LevelSelectorBar() {
-  const { appState, dispatch, topics } = useContext(AppContext)
+  const { appState, dispatch, topics, t } = useContext(AppContext)
   const selectedLevel = appState.selectedLevel || 'easy'
 
   function handleSelect(level) {
@@ -22,7 +22,7 @@ export default function LevelSelectorBar() {
 
   return (
     <div className="level-selector-bar">
-      <span className="level-selector-bar__label">Difficulty:</span>
+      <span className="level-selector-bar__label">{t('difficulty')}</span>
       <div className="level-selector-bar__pills">
         {LEVELS.map(({ id, label }) => (
           <button
@@ -31,7 +31,7 @@ export default function LevelSelectorBar() {
             onClick={() => handleSelect(id)}
             disabled={selectedLevel === id}
           >
-            {label}
+            {t(`levels.${id}`) || label}
           </button>
         ))}
       </div>

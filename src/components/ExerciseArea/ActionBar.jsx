@@ -4,6 +4,7 @@ import {
   QuestionMarkCircleIcon,
   ArrowRightIcon,
 } from '@heroicons/react/24/outline'
+import { useApp } from '../../context/useApp'
 import './ActionBar.css'
 
 export default function ActionBar({
@@ -16,44 +17,46 @@ export default function ActionBar({
   onHowToSolve,
   onNext,
 }) {
+  const { t } = useApp()
+
   return (
     <div className="action-bar">
       <button
         className="action-btn action-btn--primary"
         disabled={!canCheck}
         onClick={onCheck}
-        title="Check your answers"
+        title={t('actions.checkAnswersTitle')}
       >
         <CheckCircleIcon className="action-btn__icon" />
-        Check Answers
+        {t('actions.checkAnswers')}
       </button>
 
       <button
         className="action-btn"
         disabled={!canHint}
         onClick={onHint}
-        title="Get a hint"
+        title={t('actions.giveHintTitle')}
       >
         <LightBulbIcon className="action-btn__icon" />
-        Give Hint
+        {t('actions.giveHint')}
       </button>
 
       <button
         className="action-btn"
         onClick={onHowToSolve}
-        title="Show the full solution"
+        title={t('actions.howToSolveTitle')}
       >
         <QuestionMarkCircleIcon className="action-btn__icon" />
-        How to solve?
+        {t('actions.howToSolve')}
       </button>
 
       <button
         className="action-btn action-btn--next"
         disabled={!canNext || !hasNextExercise}
         onClick={onNext}
-        title="Go to next exercise"
+        title={t('actions.nextTitle')}
       >
-        Next
+        {t('actions.next')}
         <ArrowRightIcon className="action-btn__icon action-btn__icon--right" />
       </button>
     </div>

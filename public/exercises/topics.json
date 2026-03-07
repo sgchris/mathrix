@@ -2,6 +2,11 @@
   {
     "id": "algebra",
     "name": "Algebra",
+    "translations": {
+      "he": {
+        "name": "אלגברה"
+      }
+    },
     "exercises": [
       "algebra-easy-001",
       "algebra-easy-002",
@@ -58,6 +63,11 @@
   {
     "id": "fractions",
     "name": "Fractions",
+    "translations": {
+      "he": {
+        "name": "שברים"
+      }
+    },
     "exercises": [
       "fractions-easy-001",
       "fractions-easy-002",
@@ -89,6 +99,11 @@
   {
     "id": "percentages",
     "name": "Percentages",
+    "translations": {
+      "he": {
+        "name": "אחוזים"
+      }
+    },
     "exercises": [
       "percentages-easy-001",
       "percentages-easy-002",

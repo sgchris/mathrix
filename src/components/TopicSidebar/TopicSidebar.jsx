@@ -1,5 +1,6 @@
 import { useContext } from 'react'
 import { AppContext } from '../../context/useApp'
+import { getSupportedLocales } from '../../utils/localization'
 import './TopicSidebar.css'
 
 const TOPIC_SYMBOLS = {
@@ -9,7 +10,8 @@ const TOPIC_SYMBOLS = {
 }
 
 export default function TopicSidebar() {
-  const { appState, dispatch, topics } = useContext(AppContext)
+  const { appState, dispatch, topics, language, setLanguage, t } = useContext(AppContext)
+  const localeOptions = getSupportedLocales()
 
   function handleSelectTopic(topic) {
     dispatch({
@@ -25,7 +27,7 @@ export default function TopicSidebar() {
   return (
     <aside className="topic-sidebar">
       <div className="topic-sidebar__logo">
-        <img src={`${import.meta.env.BASE_URL}mathrix_logo_100.png`} alt="Mathrix logo" className="topic-sidebar__logo-img" />
+        <img src={`${import.meta.env.BASE_URL}mathrix_logo_100.png`} alt={t('mathrixLogoAlt')} className="topic-sidebar__logo-img" />
         <span className="topic-sidebar__logo-text">Mathrix</span>
       </div>
       <nav className="topic-sidebar__nav">
@@ -40,6 +42,23 @@ export default function TopicSidebar() {
           </button>
         ))}
       </nav>
+      <div className="topic-sidebar__footer">
+        <label className="topic-sidebar__field-label" htmlFor="language-select">
+          {t('languageLabel')}
+        </label>
+        <select
+          id="language-select"
+          className="topic-sidebar__select"
+          value={language}
+          onChange={event => setLanguage(event.target.value)}
+        >
+          {localeOptions.map(locale => (
+            <option key={locale.id} value={locale.id}>
+              {locale.label}
+            </option>
+          ))}
+        </select>
+      </div>
     </aside>
   )
 }
