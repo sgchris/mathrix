@@ -30,6 +30,7 @@ Exercises are organized by difficulty to support learners at different levels:
 - **Topic Navigation** - Easily browse and select exercises by topic
 - **Accessibility** - Math expressions are displayed in clear mathematical notation
 - **Progress Tracking** - Keep your work organized with your exercise history
+- **Google Sign-In + Cloud Sync** - Save progress in Firebase and continue from other browsers and devices
 
 ## Getting Started
 
@@ -43,3 +44,14 @@ Exercises are organized by difficulty to support learners at different levels:
 ## Feedback & Reasoning
 
 As you work through exercises, you can provide reasoning for your approaches, helping you think more deeply about the math and explaining your problem-solving process.
+
+## Firebase Setup
+
+Mathrix now supports Google authentication and cloud-backed progress sync with Firebase Authentication and Cloud Firestore.
+
+1. Copy `.env.example` to `.env.local`.
+2. Fill in the `VITE_FIREBASE_*` values from your Firebase web app configuration.
+3. Enable Google sign-in in Firebase Authentication.
+4. Create a Cloud Firestore database and allow each signed-in user to read and write only their own document.
+5. Add your local and production domains to Firebase Authentication authorized domains.
+6. Run `npm install` and `npm run dev` locally, then sign in from the sidebar to verify sync.

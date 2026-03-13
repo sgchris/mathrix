@@ -1,5 +1,15 @@
-import { useReducer, useEffect, useState } from 'react'
+import { useEffect, useReducer, useRef, useState } from 'react'
 import { fetchTopics } from '../utils/exerciseUtils'
+import {
+  ensureFirebaseAuthPersistence,
+  getFirebaseConfigError,
+  isFirebaseConfigured,
+  loadRemoteProgress,
+  saveRemoteProgress,
+  signInWithGooglePopup,
+  signOutFromFirebase,
+  subscribeToFirebaseAuth,
+} from '../utils/firebase'
 import {
   DEFAULT_LEVEL_ID,
   filterExerciseIdsByLevel,
@@ -9,7 +19,11 @@ import {
 import { getLocale, translate } from '../utils/localization'
 import { AppContext } from './useApp'
 
-const STORAGE_KEY = 'mathrix_state_v2'
+const ANONYMOUS_STORAGE_KEY = 'mathrix_state_v3'
+
+function getUserStorageKey(uid) {
+  return `${ANONYMOUS_STORAGE_KEY}_user_${uid}`
+}
 
 const initialState = {
   activeTopic: null,
@@ -18,6 +32,62 @@ const initialState = {
   exerciseStates: {},
   selectedLevel: DEFAULT_LEVEL_ID,
   language: 'en',
+  lastModifiedAt: 0,
+}
+
+function normalizePersistedState(parsedState = {}) {
+  return {
+    ...initialState,
+    ...parsedState,
+    selectedLevel: normalizeLevelId(parsedState.selectedLevel),
+    lastModifiedAt: parsedState.lastModifiedAt || 0,
+  }
+}
+
+function readStoredState(storageKey) {
+  try {
+    const saved = localStorage.getItem(storageKey)
+    if (!saved) return null
+
+    return normalizePersistedState(JSON.parse(saved))
+  } catch {
+    return null
+  }
+}
+
+function writeStoredState(storageKey, state) {
+  localStorage.setItem(storageKey, JSON.stringify(state))
+}
+
+function statesAreEqual(left, right) {
+  return JSON.stringify(left) === JSON.stringify(right)
+}
+
+function touchState(nextState) {
+  return {
+    ...nextState,
+    lastModifiedAt: Date.now(),
+  }
+}
+
+function formatFirebaseError(error) {
+  const code = error?.code
+  const details = code ? ` (${code})` : ''
+
+  switch (code) {
+    case 'auth/popup-closed-by-user':
+      return 'The sign-in popup was closed before finishing.'
+    case 'auth/cancelled-popup-request':
+      return 'A sign-in popup is already open.'
+    case 'auth/popup-blocked':
+      return 'The browser blocked the sign-in popup.'
+    case 'auth/unauthorized-domain':
+      return 'This domain is not authorized in Firebase Authentication yet.'
+    case 'permission-denied':
+      return `Firebase rejected access to the saved progress${details}. Check that Firestore rules allow read/write on userProgress/{uid} for the signed-in user, and that Cloud Firestore is enabled in the same Firebase project.`
+    default:
+      return error?.message ? `${error.message}${details && !error.message.includes(code) ? details : ''}` : 'Something went wrong while syncing your progress.'
+  }
 }
 
 function getExerciseState(state, exerciseId) {
@@ -55,7 +125,7 @@ function reducer(state, action) {
         history = firstExerciseId ? [firstExerciseId] : []
       }
 
-      return {
+      return touchState({
         ...state,
         activeTopic: topicId,
         activeExerciseId: firstExerciseId,
@@ -64,14 +134,14 @@ function reducer(state, action) {
           ...state.topicHistory,
           [topicId]: history,
         },
-      }
+      })
     }
 
     case 'SELECT_EXERCISE': {
-      return {
+      return touchState({
         ...state,
         activeExerciseId: action.payload.exerciseId,
-      }
+      })
     }
 
     case 'NEXT_EXERCISE': {
@@ -80,14 +150,14 @@ function reducer(state, action) {
       const updatedHistory = history.includes(nextExerciseId)
         ? history
         : [...history, nextExerciseId]
-      return {
+      return touchState({
         ...state,
         activeExerciseId: nextExerciseId,
         topicHistory: {
           ...state.topicHistory,
           [topicId]: updatedHistory,
         },
-      }
+      })
     }
 
     case 'ANSWER_RESULT': {
@@ -106,7 +176,7 @@ function reducer(state, action) {
         }
       }
 
-      return {
+      return touchState({
         ...state,
         exerciseStates: {
           ...state.exerciseStates,
@@ -117,13 +187,13 @@ function reducer(state, action) {
             failedAnswers: newFailedAnswers,
           },
         },
-      }
+      })
     }
 
     case 'SHOW_HINT': {
       const { exerciseId, maxHints } = action.payload
       const current = getExerciseState(state, exerciseId)
-      return {
+      return touchState({
         ...state,
         exerciseStates: {
           ...state.exerciseStates,
@@ -132,7 +202,7 @@ function reducer(state, action) {
             hintIndex: Math.min(current.hintIndex + 1, maxHints),
           },
         },
-      }
+      })
     }
 
     case 'SHOW_EXPLANATION': {
@@ -141,7 +211,7 @@ function reducer(state, action) {
       const newStatus = ['solved', 'failed'].includes(current.status)
         ? current.status
         : 'explanation_shown'
-      return {
+      return touchState({
         ...state,
         exerciseStates: {
           ...state.exerciseStates,
@@ -151,13 +221,13 @@ function reducer(state, action) {
             status: newStatus,
           },
         },
-      }
+      })
     }
 
     case 'UPDATE_INPUTS': {
       const { exerciseId, inputs } = action.payload
       const current = getExerciseState(state, exerciseId)
-      return {
+      return touchState({
         ...state,
         exerciseStates: {
           ...state.exerciseStates,
@@ -166,13 +236,13 @@ function reducer(state, action) {
             currentInputs: inputs,
           },
         },
-      }
+      })
     }
 
     case 'UPDATE_REASONING': {
       const { exerciseId, reasoning } = action.payload
       const current = getExerciseState(state, exerciseId)
-      return {
+      return touchState({
         ...state,
         exerciseStates: {
           ...state.exerciseStates,
@@ -181,7 +251,7 @@ function reducer(state, action) {
             reasoning,
           },
         },
-      }
+      })
     }
 
     case 'SET_LEVEL': {
@@ -189,7 +259,7 @@ function reducer(state, action) {
       const normalizedLevel = resolveTopicLevel(exercises || [], level)
       const baseState = { ...state, selectedLevel: normalizedLevel }
 
-      if (!state.activeTopic || !exercises || exercises.length === 0) return baseState
+      if (!state.activeTopic || !exercises || exercises.length === 0) return touchState(baseState)
 
       const solvedIds = new Set(
         Object.entries(state.exerciseStates)
@@ -204,7 +274,7 @@ function reducer(state, action) {
       const candidates = unsolved.length > 0
         ? unsolved
         : levelPool.filter(id => id !== state.activeExerciseId)
-      if (candidates.length === 0) return baseState
+      if (candidates.length === 0) return touchState(baseState)
 
       const nextExId = candidates[Math.floor(Math.random() * candidates.length)]
       const topicId = state.activeTopic
@@ -222,21 +292,25 @@ function reducer(state, action) {
         history = history.includes(nextExId) ? history : [...history, nextExId]
       }
 
-      return {
+      return touchState({
         ...baseState,
         activeExerciseId: nextExId,
         topicHistory: {
           ...state.topicHistory,
           [topicId]: history,
         },
-      }
+      })
     }
 
     case 'SET_LANGUAGE': {
-      return {
+      return touchState({
         ...state,
         language: action.payload.language,
-      }
+      })
+    }
+
+    case 'HYDRATE_STATE': {
+      return normalizePersistedState(action.payload.state)
     }
 
     default:
@@ -246,27 +320,62 @@ function reducer(state, action) {
 
 export default function AppProvider({ children }) {
   const [topics, setTopics] = useState([])
+  const [authState, setAuthState] = useState(() => ({
+    status: isFirebaseConfigured ? 'loading' : 'disabled',
+    user: null,
+    error: getFirebaseConfigError(),
+    action: 'idle',
+  }))
+  const [syncState, setSyncState] = useState(() => ({
+    status: isFirebaseConfigured ? 'signed-out' : 'disabled',
+    error: getFirebaseConfigError(),
+    lastSyncedAt: null,
+  }))
+  const appStateRef = useRef(initialState)
+  const hydratedUserIdRef = useRef(null)
+  const previousUserIdRef = useRef(null)
+  const skipNextRemoteSaveRef = useRef(false)
 
   const [appState, dispatch] = useReducer(reducer, null, () => {
-    try {
-      const saved = localStorage.getItem(STORAGE_KEY)
-      if (!saved) return initialState
-
-      const parsedState = JSON.parse(saved)
-      return {
-        ...initialState,
-        ...parsedState,
-        selectedLevel: normalizeLevelId(parsedState.selectedLevel),
-      }
-    } catch {
-      return initialState
-    }
+    return readStoredState(ANONYMOUS_STORAGE_KEY) || initialState
   })
 
   const locale = getLocale(appState.language)
 
+  appStateRef.current = appState
+
   function setLanguage(language) {
     dispatch({ type: 'SET_LANGUAGE', payload: { language } })
+  }
+
+  async function signInWithGoogle() {
+    setAuthState(current => ({ ...current, action: 'signing-in', error: null }))
+
+    try {
+      await signInWithGooglePopup()
+      setAuthState(current => ({ ...current, action: 'idle', error: null }))
+    } catch (error) {
+      setAuthState(current => ({
+        ...current,
+        action: 'idle',
+        error: formatFirebaseError(error),
+      }))
+    }
+  }
+
+  async function signOutUser() {
+    setAuthState(current => ({ ...current, action: 'signing-out', error: null }))
+
+    try {
+      await signOutFromFirebase()
+      setAuthState(current => ({ ...current, action: 'idle', error: null }))
+    } catch (error) {
+      setAuthState(current => ({
+        ...current,
+        action: 'idle',
+        error: formatFirebaseError(error),
+      }))
+    }
   }
 
   function t(key, params) {
@@ -283,8 +392,213 @@ export default function AppProvider({ children }) {
   }, [locale.dir, locale.lang])
 
   useEffect(() => {
-    localStorage.setItem(STORAGE_KEY, JSON.stringify(appState))
-  }, [appState])
+    const storageKey = authState.status === 'ready' && authState.user
+      ? getUserStorageKey(authState.user.uid)
+      : ANONYMOUS_STORAGE_KEY
+
+    writeStoredState(storageKey, appState)
+  }, [appState, authState.status, authState.user])
+
+  useEffect(() => {
+    if (!isFirebaseConfigured) return
+
+    let isCancelled = false
+    let unsubscribe = () => {}
+
+    async function initializeAuth() {
+      try {
+        await ensureFirebaseAuthPersistence()
+        if (isCancelled) return
+
+        unsubscribe = await subscribeToFirebaseAuth(user => {
+          if (isCancelled) return
+
+          setAuthState(current => ({
+            ...current,
+            status: 'ready',
+            user,
+            error: null,
+            action: 'idle',
+          }))
+        })
+      } catch (error) {
+        if (isCancelled) return
+
+        const message = formatFirebaseError(error)
+        setAuthState({
+          status: 'error',
+          user: null,
+          error: message,
+          action: 'idle',
+        })
+        setSyncState({
+          status: 'error',
+          error: message,
+          lastSyncedAt: null,
+        })
+      }
+    }
+
+    initializeAuth()
+
+    return () => {
+      isCancelled = true
+      unsubscribe()
+    }
+  }, [])
+
+  useEffect(() => {
+    if (!isFirebaseConfigured || authState.status !== 'ready') return
+
+    let isCancelled = false
+
+    async function syncSignedInUser(user) {
+      setSyncState({
+        status: 'loading',
+        error: null,
+        lastSyncedAt: null,
+      })
+
+      try {
+        const localState = appStateRef.current
+        const userCachedState = readStoredState(getUserStorageKey(user.uid))
+        const preferredLocalState = userCachedState && userCachedState.lastModifiedAt > localState.lastModifiedAt
+          ? userCachedState
+          : localState
+        const remoteProgress = await loadRemoteProgress(user.uid)
+
+        if (isCancelled) return
+
+        if (!remoteProgress?.state) {
+          if (!statesAreEqual(preferredLocalState, appStateRef.current)) {
+            skipNextRemoteSaveRef.current = true
+            dispatch({ type: 'HYDRATE_STATE', payload: { state: preferredLocalState } })
+          }
+
+          await saveRemoteProgress(user.uid, preferredLocalState)
+          if (isCancelled) return
+
+          hydratedUserIdRef.current = user.uid
+          previousUserIdRef.current = user.uid
+          setSyncState({
+            status: 'ready',
+            error: null,
+            lastSyncedAt: Date.now(),
+          })
+          return
+        }
+
+        const remoteState = normalizePersistedState(remoteProgress.state)
+        const remoteIsNewer = (remoteProgress.clientUpdatedAt || remoteState.lastModifiedAt) > preferredLocalState.lastModifiedAt
+
+        if (remoteIsNewer) {
+          if (!statesAreEqual(remoteState, appStateRef.current)) {
+            skipNextRemoteSaveRef.current = true
+            dispatch({ type: 'HYDRATE_STATE', payload: { state: remoteState } })
+          }
+        } else {
+          if (!statesAreEqual(preferredLocalState, appStateRef.current)) {
+            skipNextRemoteSaveRef.current = true
+            dispatch({ type: 'HYDRATE_STATE', payload: { state: preferredLocalState } })
+          }
+
+          if (!statesAreEqual(remoteState, preferredLocalState)) {
+            await saveRemoteProgress(user.uid, preferredLocalState)
+            if (isCancelled) return
+          }
+        }
+
+        hydratedUserIdRef.current = user.uid
+        previousUserIdRef.current = user.uid
+        setSyncState({
+          status: 'ready',
+          error: null,
+          lastSyncedAt: remoteProgress.lastSyncedAt || Date.now(),
+        })
+      } catch (error) {
+        if (isCancelled) return
+
+        setSyncState({
+          status: 'error',
+          error: formatFirebaseError(error),
+          lastSyncedAt: null,
+        })
+      }
+    }
+
+    if (!authState.user) {
+      const previousUserId = previousUserIdRef.current
+      hydratedUserIdRef.current = null
+      previousUserIdRef.current = null
+      skipNextRemoteSaveRef.current = false
+
+      if (previousUserId) {
+        const anonymousState = readStoredState(ANONYMOUS_STORAGE_KEY) || initialState
+        if (!statesAreEqual(anonymousState, appStateRef.current)) {
+          dispatch({ type: 'HYDRATE_STATE', payload: { state: anonymousState } })
+        }
+      }
+
+      setSyncState({
+        status: 'signed-out',
+        error: null,
+        lastSyncedAt: null,
+      })
+      return () => {
+        isCancelled = true
+      }
+    }
+
+    syncSignedInUser(authState.user)
+
+    return () => {
+      isCancelled = true
+    }
+  }, [authState.status, authState.user])
+
+  useEffect(() => {
+    if (!isFirebaseConfigured) return
+    if (authState.status !== 'ready' || !authState.user) return
+    if (hydratedUserIdRef.current !== authState.user.uid) return
+
+    if (skipNextRemoteSaveRef.current) {
+      skipNextRemoteSaveRef.current = false
+      return
+    }
+
+    let isCancelled = false
+    const saveTimer = window.setTimeout(async () => {
+      setSyncState(current => ({
+        ...current,
+        status: 'saving',
+        error: null,
+      }))
+
+      try {
+        await saveRemoteProgress(authState.user.uid, appState)
+        if (isCancelled) return
+
+        setSyncState({
+          status: 'ready',
+          error: null,
+          lastSyncedAt: Date.now(),
+        })
+      } catch (error) {
+        if (isCancelled) return
+
+        setSyncState(current => ({
+          ...current,
+          status: 'error',
+          error: formatFirebaseError(error),
+        }))
+      }
+    }, 700)
+
+    return () => {
+      isCancelled = true
+      window.clearTimeout(saveTimer)
+    }
+  }, [appState, authState.status, authState.user])
 
   return (
     <AppContext.Provider
@@ -295,7 +609,12 @@ export default function AppProvider({ children }) {
         locale,
         language: appState.language,
         isRTL: locale.dir === 'rtl',
+        authState,
+        syncState,
+        isCloudSyncEnabled: isFirebaseConfigured,
         setLanguage,
+        signInWithGoogle,
+        signOutUser,
         t,
       }}
     >

@@ -2,6 +2,7 @@ import { useContext } from 'react'
 import { AppContext } from '../../context/useApp'
 import { getSupportedLocales } from '../../utils/localization'
 import { DEFAULT_LEVEL_ID, resolveTopicLevel } from '../../utils/levels'
+import AuthPanel from '../shared/AuthPanel'
 import './TopicSidebar.css'
 
 const TOPIC_SYMBOLS = {
@@ -49,6 +50,7 @@ export default function TopicSidebar() {
         ))}
       </nav>
       <div className="topic-sidebar__footer">
+        <AuthPanel />
         <label className="topic-sidebar__field-label" htmlFor="language-select">
           {t('languageLabel')}
         </label>

@@ -1,0 +1,130 @@
+.auth-panel {
+  background: linear-gradient(180deg, var(--color-surface-2) 0%, #ffffff 100%);
+  border: 1px solid var(--color-border);
+  border-radius: var(--border-radius);
+  padding: 14px;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  box-shadow: var(--shadow-sm);
+}
+
+.auth-panel__header {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 12px;
+}
+
+.auth-panel__eyebrow {
+  font-size: 0.74rem;
+  font-weight: 800;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--color-text-secondary);
+}
+
+.auth-panel__status {
+  font-size: 0.9rem;
+  font-weight: 700;
+  color: var(--color-text);
+}
+
+.auth-panel__icon {
+  width: 22px;
+  height: 22px;
+  color: var(--color-accent);
+  flex-shrink: 0;
+}
+
+.auth-panel__user {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.auth-panel__avatar {
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  object-fit: cover;
+  flex-shrink: 0;
+}
+
+.auth-panel__avatar--fallback {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  background: var(--color-accent);
+  color: #fff;
+  font-weight: 800;
+}
+
+.auth-panel__name {
+  font-size: 0.95rem;
+  font-weight: 800;
+  color: var(--color-text);
+}
+
+.auth-panel__email {
+  font-size: 0.82rem;
+  color: var(--color-text-secondary);
+  word-break: break-word;
+}
+
+.auth-panel__message {
+  font-size: 0.84rem;
+  color: var(--color-text-secondary);
+}
+
+.auth-panel__message--warning {
+  color: var(--color-warning-dark);
+}
+
+.auth-panel__message--error {
+  color: var(--color-danger);
+}
+
+.auth-panel__button {
+  width: 100%;
+  min-height: 42px;
+  border-radius: var(--border-radius-sm);
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  padding: 0 12px;
+  font-size: 0.92rem;
+  font-weight: 800;
+  transition: transform 0.15s ease, box-shadow 0.15s ease, background 0.15s ease;
+}
+
+.auth-panel__button:disabled {
+  opacity: 0.65;
+  cursor: wait;
+}
+
+.auth-panel__button:not(:disabled):hover {
+  transform: translateY(-1px);
+}
+
+.auth-panel__button--primary {
+  background: var(--color-accent);
+  color: #fff;
+  box-shadow: var(--shadow-sm);
+}
+
+.auth-panel__button--primary:not(:disabled):hover {
+  background: var(--color-accent-hover);
+}
+
+.auth-panel__button--secondary {
+  background: var(--color-surface);
+  border: 1px solid var(--color-border);
+  color: var(--color-text);
+}
+
+.auth-panel__button-icon {
+  width: 18px;
+  height: 18px;
+}
