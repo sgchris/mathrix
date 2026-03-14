@@ -1,4 +1,5 @@
-import { getExerciseLevelId, LEVELS } from './levels'
+import { parseExerciseIdentity } from './exerciseId.js'
+import { getExerciseLevelId, LEVELS } from './levels.js'
 
 export const MASTERY_VIEW_MODES = ['map', 'list']
 
@@ -265,21 +266,14 @@ export function normalizeMasteryState(mastery = {}) {
 }
 
 function parseExerciseId(exerciseId = '') {
-  const match = exerciseId.match(/^(.*)-(level\d{2})-(\d+)$/)
-  if (!match) {
-    return {
-      id: exerciseId,
-      topicId: '',
-      levelId: getExerciseLevelId(exerciseId),
-      serial: 0,
-    }
-  }
+  const parsed = parseExerciseIdentity(exerciseId)
 
   return {
     id: exerciseId,
-    topicId: match[1],
-    levelId: match[2],
-    serial: Number(match[3]),
+    topicId: parsed.topicId,
+    levelId: parsed.levelId || getExerciseLevelId(exerciseId),
+    serial: parsed.serial || 0,
+    familyId: parsed.familyId,
   }
 }
 

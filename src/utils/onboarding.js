@@ -1,4 +1,5 @@
-import { filterExerciseIdsByLevel, getAvailableLevels, normalizeLevelId } from './levels'
+import { getExerciseTopicId as getTopicIdFromExerciseId } from './exerciseId.js'
+import { filterExerciseIdsByLevel, getAvailableLevels, normalizeLevelId } from './levels.js'
 
 export const DIAGNOSTIC_TOTAL_QUESTIONS = 6
 
@@ -459,8 +460,7 @@ export function countSolvedInPath(profile, exerciseStates = {}) {
 }
 
 export function getExerciseTopicId(exerciseId = '') {
-  const match = exerciseId.match(/^(.*)-level\d{2}-\d+$/)
-  return match ? match[1] : ''
+  return getTopicIdFromExerciseId(exerciseId)
 }
 
 export function resolveNearestRecommendedLevel(exercises = [], requestedLevelId) {

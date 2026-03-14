@@ -1,19 +1,37 @@
-import { localizeExercise, localizeTopics } from './localization'
+import { getGenerativeExercise, mergeTopicsWithGenerativeExercises, supportsGenerativeExercise } from './exerciseSources/generativeExerciseSource.js'
+import { getStaticExercise, getStaticTopicsRaw } from './exerciseSources/staticExerciseSource.js'
+import { localizeTopics } from './localization.js'
 
-const base = import.meta.env.BASE_URL
+function listExercisesForTopic(topics = [], topicId) {
+  return topics.find(topic => topic.id === topicId)?.exercises || []
+}
+
+function getExerciseSource(topicId, exerciseId) {
+  if (supportsGenerativeExercise(topicId, exerciseId)) {
+    return 'generative'
+  }
+
+  return 'static'
+}
 
 export async function fetchTopics(language = 'en') {
-  const res = await fetch(`${base}exercises/topics.json`)
-  if (!res.ok) throw new Error('Failed to fetch topics')
-  const topics = await res.json()
-  return localizeTopics(topics, language)
+  const topics = await getStaticTopicsRaw()
+  return localizeTopics(mergeTopicsWithGenerativeExercises(topics), language)
 }
 
 export async function fetchExercise(topicId, exerciseId, language = 'en') {
-  const res = await fetch(`${base}exercises/${topicId}/${exerciseId}.json`)
-  if (!res.ok) throw new Error(`Failed to fetch exercise: ${exerciseId}`)
-  const exercise = await res.json()
-  return localizeExercise(exercise, language)
+  const source = getExerciseSource(topicId, exerciseId)
+
+  if (source === 'generative') {
+    return getGenerativeExercise({ topicId, exerciseId, language })
+  }
+
+  return getStaticExercise({ topicId, exerciseId, language })
+}
+
+export async function listTopicExercises(topicId) {
+  const topics = mergeTopicsWithGenerativeExercises(await getStaticTopicsRaw())
+  return listExercisesForTopic(topics, topicId)
 }
 
 export function validateAnswers(exerciseInputs, userInputs) {

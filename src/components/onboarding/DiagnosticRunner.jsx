@@ -1,10 +1,11 @@
 import { useEffect, useMemo, useState } from 'react'
-import { areInputsComplete, fetchExercise, validateAnswers } from '../../utils/exerciseUtils'
+import { areInputsComplete, fetchExercise, validateAnswers } from '../../utils/exerciseUtils.js'
+import { getExerciseTopicId } from '../../utils/exerciseId.js'
 import {
   DIAGNOSTIC_TOTAL_QUESTIONS,
   bucketDuration,
   buildPlacementProfile,
-} from '../../utils/onboarding'
+} from '../../utils/onboarding.js'
 import DiagnosticQuestionCard from './DiagnosticQuestionCard'
 
 export default function DiagnosticRunner({ onboarding, language, isRTL, dispatch, t }) {
@@ -19,7 +20,7 @@ export default function DiagnosticRunner({ onboarding, language, isRTL, dispatch
     if (!questionId) return
 
     let cancelled = false
-    const topicId = questionId.replace(/-level\d{2}-\d+$/, '')
+    const topicId = getExerciseTopicId(questionId)
 
     fetchExercise(topicId, questionId, language)
       .then(data => {

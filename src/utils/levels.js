@@ -1,3 +1,5 @@
+import { parseExerciseIdentity } from './exerciseId.js'
+
 export const LEVELS = [
   { id: 'level01', number: 1, legacyId: 'easy' },
   { id: 'level02', number: 2 },
@@ -19,17 +21,8 @@ export function normalizeLevelId(levelId) {
 }
 
 export function getExerciseLevelId(exerciseId = '') {
-  const levelMatch = exerciseId.match(/-(level\d{2})-\d+$/)
-  if (levelMatch && LEVELS_BY_ID[levelMatch[1]]) {
-    return levelMatch[1]
-  }
-
-  const legacyMatch = exerciseId.match(/-(easy|medium|hard)-\d+$/)
-  if (legacyMatch) {
-    return normalizeLevelId(legacyMatch[1])
-  }
-
-  return null
+  const levelId = parseExerciseIdentity(exerciseId).levelId
+  return levelId ? normalizeLevelId(levelId) : null
 }
 
 export function matchesExerciseLevel(exerciseId, levelId) {
