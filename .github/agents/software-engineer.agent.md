@@ -22,11 +22,4 @@ You must make sure that the task and the UI/UX instructions are clear to you, an
 - You are a highly skilled software engineer, make sure that the code that you create is clean, efficient, maintainable, follows best practices, and is well tested.
 - You are allowed to install or update additional libraries and tools. Make sure you use the most common tools at their latest stable versions. Use Context7 MCP to check the latest versions of the tools and libraries that you want to use.
 - Make sure the version of the tools and the libraries that you choose, are compatible with each other and with the current codebase, before installing or updating them.
-
-
-
-
-
-
-
-
+- The website supports i18n. Currently it has English and Hebrew. Probably more languages will be added in the future. Make sure to implement the features in a way that will support multiple languages, will be easy to translate and will be compatible with both left-to-right and right-to-left languages.

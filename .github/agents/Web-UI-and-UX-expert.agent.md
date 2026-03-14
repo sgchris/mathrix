@@ -14,6 +14,11 @@ Your goal is to review a task provided in the prompt, usually it's a task from t
 
 Make sure you keep the design simple and intuitive, that will be easily integrated in to the current app's UI/UX. Make sure you keep the young users in mind (12 years old and above), and create a design that will keep them engaged and interested.
 
+## Keep in mind
+
+- The website supports i18n. Currently it has English and Hebrew. Probably more languages will be added in the future. Make sure to design a UI/UX that will support multiple languages, will be easy to translate and will be compatible with both left-to-right and right-to-left languages.
+
+
 
 
 
