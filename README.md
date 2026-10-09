@@ -55,3 +55,18 @@ Mathrix now supports Google authentication and cloud-backed progress sync with F
 4. Create a Cloud Firestore database and allow each signed-in user to read and write only their own document.
 5. Add your local and production domains to Firebase Authentication authorized domains.
 6. Run `npm install` and `npm run dev` locally, then sign in from the sidebar to verify sync.
+
+
+<!-- Security scan triggered at 2026-08-31 17:21:06 -->
+
+<!-- Security scan triggered at 2026-08-31 16:56:30 -->
+
+<!-- Security scan triggered at 2026-08-31 18:34:35 -->
+
+<!-- Security scan triggered at 2026-09-02 06:53:00 -->
+
+<!-- Security scan triggered at 2026-09-04 13:00:43 -->
+
+<!-- Security scan triggered at 2026-09-08 02:18:06 -->
+
+<!-- Security scan triggered at 2026-10-07 11:15:47 -->
